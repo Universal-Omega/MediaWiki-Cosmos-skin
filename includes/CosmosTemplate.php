@@ -47,11 +47,8 @@ class CosmosTemplate extends BaseTemplate {
 	   }elseif(ExtensionRegistry::getInstance()->isLoaded( 'PortableInfobox' ) && $config->isEnabled('europa-infobox-theme')){
 	       	echo str_replace('<aside class="portable-infobox', '<aside class="portable-infobox infobox-europa', $html);
 	   }else{
-		echo $html		
+		echo $html;	
 		}
-	    	if($this->getSkin()->getTitle()->isMainPage()){
-     		   OutputPage::addBodyClasses('mainpage');
-     		}
 	}
 	  public static function extractAndUpdate( array &$data,
 			Config $config, \Skin $skin ) : void {
