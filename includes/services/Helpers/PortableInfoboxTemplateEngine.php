@@ -10,7 +10,6 @@ use MediaWiki\Logger\LoggerFactory;
 class PortableInfoboxTemplateEngine {
 	const CACHE_TTL = 86400;
 	const TYPE_NOT_SUPPORTED_MESSAGE = 'portable-infobox-render-not-supported-type';
-	const COMPILE_FLAGS = LightnCandy::FLAG_BESTPERFORMANCE | LightnCandy::FLAG_PARENT;
 
 	private static $cache = [];
 	private static $memcache;
@@ -64,6 +63,18 @@ class PortableInfoboxTemplateEngine {
 		if ( empty( self::$cache[$type] ) ) {
 			$path = self::getTemplatesDir() . DIRECTORY_SEPARATOR . static::getTemplates()[$type];
 
+			if ( class_exists( 'LightnCandy\LightnCandy' ) ) {
+				$lightnCandyClass = new LightnCandy;
+			} else {
+				$lightnCandyClass = new \LightnCandy;
+			}
+
+			if ( class_exists( 'LightnCandy\LightnCandy' ) ) {
+				$compileFlags = LightnCandy::FLAG_BESTPERFORMANCE | LightnCandy::FLAG_PARENT;
+			} else {
+				$compileFlags = \LightnCandy::FLAG_BESTPERFORMANCE | \LightnCandy::FLAG_PARENT;
+			}
+
 			if ( $wgPortableInfoboxCacheRenderers ) {
 				$cachekey = self::$memcache->makeKey(
 					__CLASS__, \PortableInfoboxParserTagController::PARSER_TAG_VERSION, $type
@@ -71,18 +82,18 @@ class PortableInfoboxTemplateEngine {
 				$template = self::$memcache->getWithSetCallback(
 					$cachekey, self::CACHE_TTL, function () use ( $path ) {
 						// @see https://github.com/wikimedia/mediawiki-vendor/tree/master/zordius/lightncandy
-						return LightnCandy::compile( file_get_contents( $path ), [
-							'flags' => self::COMPILE_FLAGS
+						return $lightnCandyClass::compile( file_get_contents( $path ), [
+							'flags' => $compileFlags
 						] );
 					}
 				);
 			} else {
-				$template = LightnCandy::compile( file_get_contents( $path ), [
-					'flags' => self::COMPILE_FLAGS
+				$template = $lightnCandyClass::compile( file_get_contents( $path ), [
+					'flags' => $compileFlags
 				] );
 			}
 
-			self::$cache[$type] = LightnCandy::prepare( $template );
+			self::$cache[$type] = $lightnCandyClass::prepare( $template );
 		}
 
 		return self::$cache[$type];
