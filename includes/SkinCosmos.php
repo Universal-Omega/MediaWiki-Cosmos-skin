@@ -31,11 +31,13 @@ class SkinCosmos extends SkinTemplate {
 			'mediawiki.skinning.content.externallinks',
 			'skins.cosmos',
 			'skins.cosmos.legacy',
+                        'PortableInfobox.styles'
 		] );
 		
 		$out->addModules( [
 			'skins.cosmos.js',
-			'skins.cosmos.mobile'
+			'skins.cosmos.mobile',
+                        'PortableInfobox.scripts'
 		] );
 	
 		//Load SocialProfile styles if the respective configuration variables are enabled
