@@ -44,10 +44,14 @@ class CosmosTemplate extends BaseTemplate {
 		    $Replacewith = array('<h1 itemprop="name">' . $profileOwner . '</h1>' . ($config->isEnabled('profile-tags') ? CosmosSocialProfile::usergroups($parser, $profileOwner) : '') . ($config->isEnabled('show-editcount') ? '<br/> <div class="contributions-details tally"><a href="' . htmlspecialchars( Title::newFromText("Contributions/$profileOwner", NS_SPECIAL)->getFullURL()) . '"><em>' . CosmosSocialProfile::useredits($parser, $profileOwner) . '</em><span>Edits since joining this wiki<br>' . CosmosSocialProfile::userregistration($parser, $profileOwner) . '</span></a></div>' : '' ) . ($config->isEnabled('allow-bio') ? CosmosSocialProfile::userbio($parser, $profileOwner) : '' ), '<div class="hgroup">');
 	        echo str_replace($replace, $Replacewith, $html);
 	       
+	   }elseif(ExtensionRegistry::getInstance()->isLoaded( 'PortableInfobox' ) && $config->isEnabled('europa-infobox-theme')){
+	       	echo str_replace('<aside class="portable-infobox', '<aside class="portable-infobox infobox-europa', $html);
 	   }else{
-	        echo $html;
-	   }
-	    
+		echo $html		
+		}
+	    	if($this->getSkin()->getTitle()->isMainPage()){
+     		   OutputPage::addBodyClasses('mainpage');
+     		}
 	}
 	  public static function extractAndUpdate( array &$data,
 			Config $config, \Skin $skin ) : void {
