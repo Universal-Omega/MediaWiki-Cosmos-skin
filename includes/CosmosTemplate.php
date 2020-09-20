@@ -532,6 +532,7 @@ class CosmosTemplate extends BaseTemplate {
 		$html .= Html::openElement('div', ['id' => 'content', 'class' => 'cosmos-pageAligned mw-body']);
 		// Build the header
 		$this->buildHeader($html, $config);
+		$html .= Html::rawElement('hr', ['id' => 'cosmos-page-header__separator']);
 		$html .= Html::openElement('div', ['class' => 'cosmos-articleContainer']);
 		// Build the article content
 		$this->buildArticle($html, $config);
@@ -832,13 +833,16 @@ class CosmosTemplate extends BaseTemplate {
 
 		// If the primary content action is available, display it as a button
 		if (!empty($primary) && $primary !== null) {
-			$this->buildActionButton($html, $config, $primary);
-		}
-
-		// If there are one or more miscellaneous content actions available,
-		// display them as a drop-down list following the primary button
-		if (sizeof($dropdown) > 0) {
-			$this->buildActionDropdown($html, $config, $dropdown);
+			// If additional content actions are available, display the primary action button, grouped with a dropdown containing the rest of the actions.
+			if (sizeof($dropdown) > 0) {
+				$html .= Html::openElement('div', ['class' => 'wds-button-group']);
+				$this->buildActionButton($html, $config, $primary);
+				$this->buildActionDropdown($html, $config, $dropdown);
+				$html .= Html::closeElement('div');
+			} else {
+				// If there aren't more actions available, just display the primary action button.
+				$this->buildActionButton($html, $config, $primary);
+			}
 		}
 
 		// If the secondary content action is available, display it as a button

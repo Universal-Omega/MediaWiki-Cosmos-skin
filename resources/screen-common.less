@@ -252,8 +252,8 @@ body > #mw-content-container {
 	color: @alt-font-color;
 	stroke: @alt-font-color;
 	stroke-width: 2px;
+	border: 1px solid @alt-font-color;
 	&:hover {
-		border: 1px solid @border-color;
 		opacity: 0.8;
 		transition: 0.4s;
 	}
@@ -275,12 +275,15 @@ body > #mw-content-container {
 	}
 }
 .cosmos-button-action {
-	height: 28px;
+	height: 20px;
 	margin: 15px 0 15px 0;
-	height: 28px;
-	margin: 15px 0 15px 0;
+	border-radius: 3px;
 	>span {
-		margin: auto 20px;
+		margin: auto 12px;
+	}
+	>svg {
+	    width: 20px;
+	    height: 20px;
 	}
 }
 .cosmos-button-text {
@@ -445,6 +448,7 @@ body > .suggestions {
 .cosmos-button {
 	border: 1px solid transparent;
 	padding: 10px;
+	font-size: 14px;
 	display: inline-flex;
 	align-content: center;
 	align-items: center;
@@ -1978,6 +1982,13 @@ ul#filetoc {
 #cosmos-header-articleHeader {
 	display: inline-block;
 	width: 100%;
+}
+#cosmos-page-header__separator {
+	background-color: #878080;
+	border: 0;
+    height: 1px;
+    margin-bottom: 18px;
+    margin-top: 0;
 }
 @media screen and (max-width: 1099px) and (min-width: 851px) {
 	#mw-content-wrapper {
